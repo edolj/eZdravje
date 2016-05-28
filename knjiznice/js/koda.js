@@ -1,4 +1,9 @@
 
+// Za združljivost razvoja na lokalnem računalniku ali v Cloud9 okolju
+if (!process.env.PORT) {
+  process.env.PORT = 8080;
+}
+
 var baseUrl = 'https://rest.ehrscape.com/rest/v1';
 var queryUrl = baseUrl + '/query';
 
