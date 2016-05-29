@@ -10,7 +10,6 @@ var queryUrl = baseUrl + '/query';
 var username = "ois.seminar";
 var password = "ois4fri";
 
-
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
  * enolične ID številke za dostop do funkcionalnosti
@@ -26,7 +25,6 @@ function getSessionId() {
     return response.responseJSON.sessionId;
 }
 
-
 /**
  * Generator podatkov za novega pacienta, ki bo uporabljal aplikacijo. Pri
  * generiranju podatkov je potrebno najprej kreirati novega pacienta z
@@ -36,17 +34,27 @@ function getSessionId() {
  * @return ehrId generiranega pacienta
  */
 function generirajPodatke(stPacienta) {
-  ehrId = "";
+  var ehrId = "";
 
   // TODO: Potrebno implementirati
 
   return ehrId;
 }
 
-
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
 function pocistiPolja() {
     document.getElementById('kreirajIme').value='';
     document.getElementById('kreirajPriimek').value='';
     document.getElementById('kreirajDatumRojstva').value='';
+}    
+
+function pocistiPolja2() {
+    document.getElementById('dodajVitalnoEHR').value='';
+    document.getElementById('dodajVitalnoDatumInUra').value='';
+    document.getElementById('dodajVitalnoTelesnaVisina').value='';
+    document.getElementById('dodajVitalnoTelesnaTeza').value='';
+    document.getElementById('dodajVitalnoTelesnaTemperatura').value='';
+    document.getElementById('dodajVitalnoKrvniTlakSistolicni').value='';
+    document.getElementById('dodajVitalnoKrvniTlakDiastolicni').value='';
+    document.getElementById('dodajVitalnoNasicenostKrviSKisikom').value='';
 }    

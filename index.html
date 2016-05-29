@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
+  <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="knjiznice/js/bootstrap.min.js"></script>
+  <script src="knjiznice/js/koda.js"></script>
   <style>
     body {padding-top: 70px;}
   </style>
-  <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
-  <script src="knjiznice/js/bootstrap.min.js"></script>
-  <script src="knjiznice/js/koda.js"></script>
 </head>
 <body>
 
@@ -37,30 +38,53 @@
   <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
 
   <!-- ZAČETEK: Vsebina aplikacije -->
-  <div class="container col-lg-5 col-md-5 col-sm-5">
+  <div class="container col-lg-5 col-md-5 col-sm-5" style="float:right">
     <!--<div class="row">
       <div class="col-lg-12 text-center">
         <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
       </div>
     </div>-->
     
-    <div class="panel panel-info">
+    <div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b> (EHR) </div>
+						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b> (EHR) </div><button type="button" class="btn btn-warning btn-xs"  onclick="pocistiPolja()" 
+    					style="float: right; margin-right:10px">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
 					</div>
 				</div>
 				<div class="panel-body">
 					<input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Ime"><br>
 					<input id="kreirajPriimek" type="text" class="form-control" placeholder="Priimek"><br>
 					<input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="Datum rojstva"><br>
-					<button type="button" class="btn btn-danger btn-xs"  onclick="pocistiPolja()" 
-    					style="float: right; margin-right:8px">Počisti polja </button>
-					<button type="button" class="btn btn-info btn-xs" onclick="kreirajEHRzaBolnika()"
-					    style="float: right; margin-right:8px">Dodaj osnovne podatke o bolniku</button>
+				    <div style="text-align: center;">
+               <button type="button" class="btn btn-primary btn-md" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button>
+            </div>
 				</div>
 		</div>
-    
+		
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-lg-5 col-md-5 col-sm-5"><b>Vnos vitalnih znakov</b></div><button type="button" class="btn btn-warning btn-xs"  onclick="pocistiPolja2()" 
+    					style="float: right; margin-right:10px">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
+				</div>
+			</div>
+			<div class="panel-body">
+		    <span>EHR ID </span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+				<span>Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
+				<span>Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+				<span>Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
+				<span>Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
+				<span>Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
+				<span>Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
+				<span>Nasičenost krvi s kisikom</span><div class="input-group"><input id="dodajVitalnoNasicenostKrviSKisikom" type="text" class="form-control input-mini" placeholder="98"><span class="input-group-addon">%</span></div>
+			  <br>
+			    <div style="text-align: center;">
+			      <button type="button" class="btn btn-primary btn-md" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+		      </div>
+		  </div>
+		</div>
+		  
   </div>
   <!-- KONEC: Vsebina aplikacije -->
 
