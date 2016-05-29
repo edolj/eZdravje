@@ -45,3 +45,8 @@ function generirajPodatke(stPacienta) {
 
 
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
+function pocistiPolja() {
+    document.getElementById('kreirajIme').value='';
+    document.getElementById('kreirajPriimek').value='';
+    document.getElementById('kreirajDatumRojstva').value='';
+}    

@@ -37,12 +37,30 @@
   <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
 
   <!-- ZAČETEK: Vsebina aplikacije -->
-  <div class="container">
-    <div class="row">
+  <div class="container col-lg-5 col-md-5 col-sm-5">
+    <!--<div class="row">
       <div class="col-lg-12 text-center">
         <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
       </div>
-    </div>
+    </div>-->
+    
+    <div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b> (EHR) </div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Ime"><br>
+					<input id="kreirajPriimek" type="text" class="form-control" placeholder="Priimek"><br>
+					<input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="Datum rojstva"><br>
+					<button type="button" class="btn btn-danger btn-xs"  onclick="pocistiPolja()" 
+    					style="float: right; margin-right:8px">Počisti polja </button>
+					<button type="button" class="btn btn-info btn-xs" onclick="kreirajEHRzaBolnika()"
+					    style="float: right; margin-right:8px">Dodaj osnovne podatke o bolniku</button>
+				</div>
+		</div>
+    
   </div>
   <!-- KONEC: Vsebina aplikacije -->
 
