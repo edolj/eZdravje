@@ -3,11 +3,16 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
-  <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
+	<script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  
+  <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+  <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+  <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+  
   <style>
     body {padding-top: 70px;}
   </style>
@@ -30,7 +35,7 @@
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
+          <li><a href="#" onclick="generirajPodatke(1)">Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -48,8 +53,8 @@
     <div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b> (EHR) </div><button type="button" class="btn btn-warning btn-xs"  onclick="pocistiPolja()" 
-    					style="float: right; margin-right:10px">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
+						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b> (EHR) </div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja()" 
+    					style="float: right; margin-right:10px;background-color: #ffff00">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -57,7 +62,8 @@
 					<input id="kreirajPriimek" type="text" class="form-control" placeholder="Priimek"><br>
 					<input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="Datum rojstva"><br>
 				    <div style="text-align: center;">
-               <button type="button" class="btn btn-primary btn-md" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button>
+               <button type="button" class="btn btn-primary btn-md" onclick="ustvariEhr()">Ustvari Ehr Id</button>
+               <span id="kreirajSporocilo"></span>
             </div>
 				</div>
 		</div>
@@ -65,19 +71,19 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-lg-5 col-md-5 col-sm-5"><b>Vnos vitalnih znakov</b></div><button type="button" class="btn btn-warning btn-xs"  onclick="pocistiPolja2()" 
-    					style="float: right; margin-right:10px">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
+					<div class="col-lg-5 col-md-5 col-sm-5"><b>Vnos vitalnih znakov</b></div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja2()" 
+    					style="float: right; margin-right:10px;background-color: #ffff00">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
 				</div>
 			</div>
 			<div class="panel-body">
 		    <span>EHR ID </span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-				<span>Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
-				<span>Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
-				<span>Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
-				<span>Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
-				<span>Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
-				<span>Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
-				<span>Nasičenost krvi s kisikom</span><div class="input-group"><input id="dodajVitalnoNasicenostKrviSKisikom" type="text" class="form-control input-mini" placeholder="98"><span class="input-group-addon">%</span></div>
+				<br><span>Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
+				<br><span>Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+				<br><span>Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
+				<br><span>Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
+				<br><span>Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
+				<br><span>Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
+				<br><span>Nasičenost krvi s kisikom</span><div class="input-group"><input id="dodajVitalnoNasicenostKrviSKisikom" type="text" class="form-control input-mini" placeholder="98"><span class="input-group-addon">%</span></div>
 			  <br>
 			    <div style="text-align: center;">
 			      <button type="button" class="btn btn-primary btn-md" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
@@ -85,6 +91,42 @@
 		  </div>
 		</div>
 		  
+  </div>
+  
+  <div class="container col-lg-7 col-md-7 col-sm-7">
+    
+    <div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-lg-7 col-md-7 col-sm-7"><b>Rezultati</b></div>
+				</div>
+			</div>
+			<div class="panel-body">
+			  <div class="form-group">
+          <label for="select1">Izberi osebo:</label>
+            <select class="form-control" id="select1" onchange="myFunction()">
+              <option></option>
+              <option>d21a38ec-71ce-46b7-9333-7cd1962586bb -> Maja Kosir</option>
+              <option>2d5bfb0c-e357-4e06-96b9-f5fe0eb0948c -> Jakob Novak</option>
+              <option>622e7e21-1c87-40e3-be3b-3dc95aca8200 -> Muri Janer</option>
+            </select>
+        </div><br>
+        <label id="ime" style="display: block; text-align: center;"></label><br>
+        <div id="chartdiv" style="width: 100%; height: 520px;"></div>
+        <br>
+        <!--<button type="button" onclick="prikazi()">Ostalo</button>-->
+        <div id="master_detail">
+          <label for="select2">Ostali podatki:</label>
+          <select class="form-control" id="select2" onchange="masterDetail()">
+              <option></option>
+              <option>Teza</option>
+              <option>Temperatura</option>
+            </select>
+          <span id="izpis"></span>
+        </div>
+		  </div>
+		</div>
+    
   </div>
   <!-- KONEC: Vsebina aplikacije -->
 
