@@ -1,9 +1,4 @@
 
-// Za združljivost razvoja na lokalnem računalniku ali v Cloud9 okolju
-//if (!process.env.PORT) {
-//  process.env.PORT = 8080;
-//}
-
 var baseUrl = 'https://rest.ehrscape.com/rest/v1';
 var queryUrl = baseUrl + '/query';
 
@@ -86,8 +81,7 @@ function dodajMeritveVitalnihZnakov() {
 	var telesnaTemperatura = $("#dodajVitalnoTelesnaTemperatura").val();
 	var sistolicniKrvniTlak = $("#dodajVitalnoKrvniTlakSistolicni").val();
 	var diastolicniKrvniTlak = $("#dodajVitalnoKrvniTlakDiastolicni").val();
-	var nasicenostKrviSKisikom = $("#dodajVitalnoNasicenostKrviSKisikom").val();
-	//var merilec = $("#dodajVitalnoMerilec").val();
+	//var nasicenostKrviSKisikom = $("#dodajVitalnoNasicenostKrviSKisikom").val();
 
 	if (!ehrId || ehrId.trim().length == 0) {
 		$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo " +
@@ -108,7 +102,7 @@ function dodajMeritveVitalnihZnakov() {
 		    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
 		    "vital_signs/blood_pressure/any_event/systolic": sistolicniKrvniTlak,
 		    "vital_signs/blood_pressure/any_event/diastolic": diastolicniKrvniTlak,
-		    "vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom
+		    //"vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom
 		};
 		var parametriZahteve = {
 		    ehrId: ehrId,
@@ -188,11 +182,31 @@ function prikaziGraf() {
             //tabelaD.push(el.diastolic);
             //tabelaS.push(el.systolic);
             //datum.push(el.time.substring(0,10)+"\n"+el.time.substring(11,16));
+            // sporocilo
+            var sporociloD = "";
+            var sporociloS = "";
+            if(el.diastolic <= 60) {
+              sporociloD = "Nizek";
+            } else if(el.systolic <= 90) {
+              sporociloS = "Nizek";
+            } else if(el.diastolic >= 90) {
+              sporociloD = "Visok. Posvetujte se z zdravnikom.";
+            } else if(el.systolic >= 140) {
+              sporociloS = "Visok. Posvetujte se z zdravnikom.";
+            } else if(el.systolic >= 86 && el.systolic <=124 && el.diastolic >= 60 && el.diastolic <= 84) {
+              sporociloS = "Idealno."
+            } else if(el.systolic >= 120 && el.systolic <=140 && el.diastolic >= 80 && el.diastolic <= 90) {
+              sporociloS = "Priporoceno izvajanje aktivnosti in zdrava prehrana.";
+            } else if(el.systolic >= 140 && el.diastolic >= 90) {
+              sporociloS = "Jemljite zdravila in se posvetujte z zdravnikom!";
+            } 
         
             chartData.push({
                 "systolic" : el.systolic-el.diastolic,
                 "diastolic" : el.diastolic,
                 "datum" : el.time.substring(0,10)+"\n"+el.time.substring(11,16),
+                balloonTextField: el.diastolic+" "+sporociloD,
+                balloonTextSMS: el.systolic+" "+sporociloS,
             });
         });
 
@@ -232,17 +246,18 @@ function prikaziGraf() {
   }],
   "startDuration": 1,
   "graphs": [{
-    //"balloonText": "<b>[[category]]: [[value]]</b>",
-    "color": "#FF0F00",
+    "balloonText": "<b>[[balloonTextField]]</b>",
+    "color": "#FF0000",
     "fillAlphas": 0.9,
     "lineAlpha": 0.2,
     "type": "column",
     "valueField": "diastolic",
   },{
+    "balloonText": "<b>[[balloonTextSMS]]</b>",
     "fillAlphas": 0.8,
     "lineAlpha": 0.3,
     "type": "column",
-	"color": "#000000",
+	  "color": "#FF0000",
     "valueField": "systolic"
   }],
   "chartCursor": {
@@ -256,7 +271,7 @@ function prikaziGraf() {
     "labelRotation": 45
   },
   "balloon": {
-    "enabled": false
+    "enabled": true
   },
   "export": {
     "enabled": true
@@ -337,6 +352,12 @@ function masterDetail() {
  * @param stPacienta zaporedna številka pacienta (1, 2 ali 3)
  * @return ehrId generiranega pacienta
  */
+function generiraj() {
+  generirajPodatke(1);
+  generirajPodatke(2);
+  generirajPodatke(3);
+} 
+ 
 function generirajPodatke(stPacienta) {
   ehrId = "";
 
@@ -391,38 +412,45 @@ function generirajPodatke(stPacienta) {
 		                }
 		            }
 		        });
-		//console.log("notri "+ehrId);
-		var compositionData = {
-    "ctx/time": "2014-3-19T13:10Z",
-    "ctx/language": "en",
-    "ctx/territory": "CA",
-    "vital_signs/body_temperature/any_event/temperature|magnitude": 37.1,
-    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
-    "vital_signs/blood_pressure/any_event/systolic": 120,
-    "vital_signs/blood_pressure/any_event/diastolic": 90,
-    "vital_signs/height_length/any_event/body_height_length": 171,
-    "vital_signs/body_weight/any_event/body_weight": 57.2
-    };
-    var queryParams = {
-    ehrId: ehrId,
-		templateId: 'Vital Signs',
-		format: 'FLAT',
-    //committer: 'Belinda Nurse'
-    };
-    $.ajax({
-    url: baseUrl + "/composition?" + $.param(queryParams),
-    type: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify(compositionData),
-    success: function (res) {
-        console.log("uspeh "+res);
-      }
-    });
-	
+		        
+	          shraniPodatke(ehrId, function() {
+	            var compositionData = {
+              "ctx/time": "2014-3-19T13:10Z",
+              "ctx/language": "en",
+              "ctx/territory": "CA",
+              "vital_signs/body_temperature/any_event/temperature|magnitude": 36 + Math.floor(Math.random()*4),
+              "vital_signs/body_temperature/any_event/temperature|unit": "°C",
+              "vital_signs/blood_pressure/any_event/systolic": 100 + Math.floor(Math.random()*50),
+              "vital_signs/blood_pressure/any_event/diastolic": 60 + Math.floor(Math.random()*40),
+              "vital_signs/height_length/any_event/body_height_length": 171 + Math.floor(Math.random()*22),
+              "vital_signs/body_weight/any_event/body_weight": 57.2 + Math.floor(Math.random()*30),
+              };
+              var queryParams = {
+              ehrId: ehrId,
+          		templateId: 'Vital Signs',
+          		format: 'FLAT',
+              //committer: 'Belinda Nurse'
+              };
+              $.ajax({
+              url: baseUrl + "/composition?" + $.param(queryParams),
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify(compositionData),
+              success: function (res) {
+                  console.log("uspeh "+res);
+                }
+              });
+	          });
 		    }
 		});
 
   return "0";
+}
+
+function shraniPodatke(ehrId, callback) {
+  for(var i=1; i<8; i++) {
+    callback(ehrId);
+  }
 }
 
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
@@ -440,7 +468,6 @@ function pocistiPolja2() {
     document.getElementById('dodajVitalnoTelesnaTemperatura').value='';
     document.getElementById('dodajVitalnoKrvniTlakSistolicni').value='';
     document.getElementById('dodajVitalnoKrvniTlakDiastolicni').value='';
-    document.getElementById('dodajVitalnoNasicenostKrviSKisikom').value='';
 }    
 
 function myFunction() {
@@ -448,6 +475,8 @@ function myFunction() {
   var x = document.getElementById("select1").value;
   x = x.split(" ");
   var ehrId = x[0];
+  
+  $("#dodajVitalnoEHR").val(ehrId);
   
   var searchData = [
     {key: "ehrId", value: ehrId}
@@ -461,7 +490,8 @@ function myFunction() {
         //$("#header").html("Search by ehrId " + ehrId);
         for (i in res.parties) {
             var party = res.parties[i];
-            $("#ime").html("<span>"+party.firstNames + ' ' + party.lastNames + "</span><br>");
+            $("#ime").html("<span>"+party.firstNames + ' ' + party.lastNames + ' [' 
+              + party.dateOfBirth.substring(0,10) + "] </span><br>");
         }
     }
   });
@@ -479,6 +509,68 @@ function myFunction() {
   prikaziGraf();
 }
 
-$(document).ready(function() {
-    
-});
+var map;
+function initMap() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -33.867, lng: 151.195},
+    zoom: 12
+  });
+
+  var infoWindow = new google.maps.InfoWindow({map: map});
+
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      //infoWindow.setPosition(pos);
+      //infoWindow.setContent('Location found.');
+      map.setCenter(pos);
+      infowindow = new google.maps.InfoWindow();
+      var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+        location: pos,
+        radius: 2500,
+        types: ['hospital','pharmacy']
+      }, callback);
+      
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+}
