@@ -213,7 +213,7 @@ function prikaziGraf() {
   var chart = AmCharts.makeChart( "chartdiv", {
     "type": "serial",
     "theme": "light",
-    "dataProvider": chartData,
+    "dataProvider": chartData.reverse(),
   /*"gridAboveGraphs": true,
   "startDuration": 1,
   "graphs": [ {
