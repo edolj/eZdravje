@@ -242,7 +242,7 @@ function prikaziGraf() {
     "stackType": "regular",
     "axisAlpha": 0.3,
     "gridAlpha": 0,
-    "title": "Krvni tlak"
+    "title": "Krvni tlak [mm Hg]"
   }],
   "startDuration": 1,
   "graphs": [{
@@ -309,7 +309,7 @@ function masterDetail() {
                     "table-hover'><tr><th>Datum in ura</th>" +
                     "<th class='text-right'>Telesna teža</th></tr>";
 						        for (var i in res) {
-						            results += "<tr><td>" + res[i].time +
+						            results += "<tr><td>" + res[i].time.substring(0,10) + "; " + res[i].time.substring(11,16) +
                           "</td><td class='text-right'>" + res[i].weight + " " 	+
                           res[i].unit + "</td>";
 						        }
@@ -331,7 +331,7 @@ function masterDetail() {
                     "table-hover'><tr><th>Datum in ura</th>" +
                     "<th class='text-right'>Telesna temperatura</th></tr>";
 						        for (var i in res) {
-						            results += "<tr><td>" + res[i].time +
+						            results += "<tr><td>" + res[i].time.substring(0,10) + "; " + res[i].time.substring(11,16) +
                           "</td><td class='text-right'>" + res[i].temperature +
                           " " + res[i].unit + "</td>";
 						        }
@@ -415,10 +415,10 @@ function generirajPodatke(stPacienta) {
 		        
 	          shraniPodatke(ehrId, function() {
 	            var compositionData = {
-              "ctx/time": "2014-3-19T13:10Z",
+              "ctx/time": "2016-3-19T13:10Z",
               "ctx/language": "en",
               "ctx/territory": "CA",
-              "vital_signs/body_temperature/any_event/temperature|magnitude": 36 + Math.floor(Math.random()*4),
+              "vital_signs/body_temperature/any_event/temperature|magnitude": 36 + Math.floor(Math.random()*2),
               "vital_signs/body_temperature/any_event/temperature|unit": "°C",
               "vital_signs/blood_pressure/any_event/systolic": 100 + Math.floor(Math.random()*50),
               "vital_signs/blood_pressure/any_event/diastolic": 60 + Math.floor(Math.random()*40),
@@ -437,7 +437,7 @@ function generirajPodatke(stPacienta) {
               contentType: 'application/json',
               data: JSON.stringify(compositionData),
               success: function (res) {
-                  console.log("uspeh "+res);
+                  //console.log("uspeh "+res);
                 }
               });
 	          });
@@ -534,7 +534,7 @@ function initMap() {
       var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
         location: pos,
-        radius: 2500,
+        radius: 10000,
         types: ['hospital','pharmacy']
       }, callback);
       
