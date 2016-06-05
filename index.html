@@ -58,7 +58,7 @@
     <div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-lg-5 col-md-5 col-sm-5"><b>Osnovni podatki</b></div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja()" 
+						<div class="col-lg-5 col-md-5 col-sm-5"><b>Vnos osnovnih podatkov</b></div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja()" 
     					style="float: right; margin-right:10px;background-color: #ffff00">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 					<span>Datum rojstva </span>
 					<input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="leto-mesec-dan"><br>
 				    <div style="text-align: center;">
-               <button type="button" class="btn btn-primary btn-md" onclick="ustvariEhr()">Ustvari Ehr Id</button>
+               <button type="button" class="btn btn-primary btn-md" onclick="ustvariEhr()">Ustvari EhrId</button>
                <span id="kreirajSporocilo"></span>
             </div>
 				</div>
@@ -79,7 +79,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-lg-5 col-md-5 col-sm-5"><b>Vnos vitalnih znakov</b></div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja2()" 
+					<div class="col-lg-5 col-md-5 col-sm-5"><b>Meritev vitalnih znakov</b></div><button type="button" class="btn btn-default btn-xs"  onclick="pocistiPolja2()" 
     					style="float: right; margin-right:10px;background-color: #ffff00">Počisti polja <span class="glyphicon glyphicon-trash"></span> </button>
 				</div>
 			</div>
@@ -111,7 +111,7 @@
 			<div class="panel-body">
 			  <div class="form-group">
           <label for="select1">Izberi osebo:</label>
-            <select class="form-control" id="select1" onchange="myFunction()">
+            <select class="form-control" id="select1" onchange="izberiOsebo()">
               <option></option>
               <option>d21a38ec-71ce-46b7-9333-7cd1962586bb -> Maja Kosir</option>
               <option>2d5bfb0c-e357-4e06-96b9-f5fe0eb0948c -> Jakob Novak</option>

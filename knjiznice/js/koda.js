@@ -470,7 +470,7 @@ function pocistiPolja2() {
     document.getElementById('dodajVitalnoKrvniTlakDiastolicni').value='';
 }    
 
-function myFunction() {
+function izberiOsebo() {
   sessionId = getSessionId();
   var x = document.getElementById("select1").value;
   x = x.split(" ");
@@ -534,7 +534,7 @@ function initMap() {
       var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
         location: pos,
-        radius: 10000,
+        radius: 20000,
         types: ['hospital','pharmacy']
       }, callback);
       
